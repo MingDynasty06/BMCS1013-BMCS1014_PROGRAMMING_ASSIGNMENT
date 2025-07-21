@@ -31,7 +31,7 @@ int main() {
         cout << "============================" << endl;
         cout << "      🔑 RECOVERY DETAILS     " << endl;
         cout << "============================" << endl;
-        cout << "Your username is: " << username << endl;
+        cout << "Your USERNAME is: " << username << endl;
         cout << "Your password is: " << password << endl;
         cout << "-----------------------------------" << endl;
         cout << "Redirecting you to login page..." << endl << endl;
