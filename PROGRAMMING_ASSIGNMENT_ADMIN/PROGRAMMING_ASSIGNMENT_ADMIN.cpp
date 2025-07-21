@@ -51,7 +51,7 @@ int main() {
 
             if (admin_username == username && admin_password == password) {
                 cout << endl;
-                cout << "✅ Login successful! Welcome, admin." << endl;
+                cout << "✅ Login successful! Welcome, adminsssss." << endl;
                 break; // Exit loop 
             }
             else {
