@@ -17,7 +17,7 @@ int main() {
     cout << "===================================" << endl;
     cout << "        🗝️  ADMIN LOGIN PAGE        " << endl;
     cout << "===================================" << endl;
-    cout << "1. Forgot Password" << endl;
+    cout << "1. Forgot Password"<<"Testing123" << endl;
     cout << "2. Login" << endl;
     cout << "3. Exit" << endl;
     cout << "-----------------------------------" << endl;
@@ -78,7 +78,7 @@ int main() {
         break;
 
     default:
-        cout << "⚠️ Invalid choice. Please select 1–3." << endl;
+        cout << "⚠️ Invalid choice. Please select 1 to 3." << endl;
     }
 
     return 0;
