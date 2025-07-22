@@ -48,7 +48,7 @@ int forgetpassword(int);
 
 int forgetpassword(int i) {
     int choice;
-    cout << "1. Try Again" << endl;
+    cout << "1. Try Again123" << endl;
     cout << "2. Forgot Password" << endl;
     cout << "Enter your choice: ";
     cin >> choice;
