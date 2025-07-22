@@ -1,0 +1,178 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+// Global variable to store the current logged-in user
+string currentUser;
+
+// Function to log in an existing user
+bool login() {
+    string username, password, storedUser, storedPass;
+
+    cout << "\n========== Log In ==========" << endl;
+    cout << "" << endl;
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter password: ";
+    cin >> password;
+
+    ifstream file("users.txt");
+    if (file.is_open()) {
+        while (file >> storedUser >> storedPass) {
+            if (storedUser == username && storedPass == password) {
+                file.close();
+                currentUser = username; // store for greeting
+                return true;
+            }
+        }
+        file.close();
+    }
+    else {
+        cout << "Error: Unable to open file!" << endl;
+    }
+
+    return false;
+}
+
+// Function to sign up a new user and redirect to login
+void signUp() {
+    string username, password, storedUser, storedPass;
+    bool exists; //A flag to check whether the username already exists
+
+    cout << "\n========== Sign Up ==========" << endl;
+
+    // Keep asking for a new username until it's unique
+    do {
+        exists = false; 
+        cout << "Enter new username: ";
+        cin >> username;
+
+        ifstream checkFile("users.txt");
+        if (checkFile.is_open()) {
+            while (checkFile >> storedUser >> storedPass) {
+                if (storedUser == username) {
+                    exists = true;
+                    break;
+                }
+            }
+            checkFile.close();
+        }
+
+        if (exists) {
+            cout << "Username already exists! Please choose a different one.\n" << endl;
+        }
+
+    } while (exists); // Repeat if username already exists // If not match found, exists remains false
+
+    // Ask for password after unique username
+    cout << "Enter new password: ";
+    cin >> password;
+
+    ofstream file("users.txt", ios::app); // ofstream can save new suername and password, while the existing data still remain
+    if (file.is_open()) {
+        file << username << " " << password << endl;
+        file.close();
+        cout << "" << endl;
+        cout << "Sign-up successful!" << endl;
+    }
+    else {
+        cout << "Error: Unable to open file!" << endl;
+        return; // Stop running the code
+    }
+
+    // After successful sign-up, go to login page
+    if (login()) {
+        cout << "Login successful! Welcome, " << currentUser << "!" << endl;
+    }
+    else {
+        cout << "Login failed after sign-up. Please try logging in again." << endl;
+    }
+}
+
+int main() {
+    // Roselle branding and introduction
+    cout << "" << endl;
+    cout << string(120, '-') << endl;
+    cout << setw(60) << "ROSELLE" << endl;
+    cout << string(120, '-') << endl;
+    cout << "" << endl;
+    cout << "At Roselle, our vision is to be the most trusted and sought-after bridal beauty service, helping every bride feel \nconfident, radiant, and truly beautiful on one of the most important days of her life." << endl;
+    cout << "" << endl;
+    cout << "Our mission at Roselle is to provide high-quality, personalized beauty services that enhance each bride’s natural \nbeauty. We are dedicated to creating a calm, professional, and enjoyable experience from the first consultation to the \nfinal touch-up, making every moment special." << endl;
+    cout << "" << endl;
+    cout << "Operating hours (Monday - Friday) : 10am - 7pm." << endl;
+    cout << "Contact number : 018-6739021" << endl;
+    cout << "" << endl;
+
+    // Loop until valid input (1 or 2)
+    string loginnum;
+    do {
+        cout << "1. Log in \n2. Sign Up" << endl;
+        cout << left << setw(18) << "Enter a number :";
+        cin >> loginnum;
+
+        if (loginnum == "1") {
+            if (login()) {
+                cout << "" << endl;
+                cout << "Login successful! Welcome, " << currentUser << "!" << endl;
+                break;
+            }
+            else {
+                cout << "" << endl;
+                cout << "Login failed. Incorrect username or password." << endl;
+                cout << "" << endl;
+            }
+        }
+        else if (loginnum == "2") {
+            signUp(); // Includes login after successful sign-up
+            break;
+        }
+        else {
+            cout << "Invalid option. Please enter 1 to log in or 2 to sign up.\n" << endl;
+            cout << "" << endl;
+        }
+
+    } while (true); //stop when have a break
+
+    cout << "" << endl;
+    string option;
+    string service;
+    do {
+        cout << "" << endl;
+        cout << "========== Choose a Service Option ==========" << endl;
+        cout << "" << endl;
+        cout << "1. View Services \n2. Check for appoinment" << endl;
+        cout << "" << endl;
+        cout << "Enter your service option :";
+        cin >> option;
+        cout << "" << endl;
+        if (option == "1") {
+            cout << "========== Services ==========" << endl;
+            cout << "" << endl;
+            cout << "1. Make Up Service \n2. Pre-wedding service \n3. Hair Styling service \n4. Brides mais & family makeup service \n5. Nail care service (manicure & pedicure)" << endl;
+            cout << "" << endl;
+            cout << "Choose an services :";
+            cin >> service;
+            cout << "" << endl;
+            if (service == "1") {
+                cout << "========== Experts ==========" << endl;
+                cout << "" << endl;
+                cout << left << setw(40) << setfill('-') << "1. Allice Tan (Senior) " << "RM 400" << endl;
+                cout << left << setw(40) << setfill('-') << "2. Bella Lim (Junior) " << "RM 300" << endl;
+                cout << left << setw(40) << setfill('-') << "3. Chloe Ong (Bridal Specialist)" << "RM 500" << endl;
+            }
+        }
+        else if (option == "2") {
+
+        }
+        else {
+            cout << "Invalid Option! Please choose again." << endl;
+        }
+    } while (option != "1" && option != "2"); //Loop until user chooses 1 or 2 option
+
+    return 0;
+}
+
