@@ -1,96 +1,118 @@
-﻿// PROGRAMMING_ASSIGNMENT_ADMIN.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <string>
 using namespace std;
 
+struct Expert {
+    string name;
+    string schedule[7]; // 7 days in a week
+};
+
+// Function to display a selected expert's schedule
+void viewExpertSchedule(Expert experts[], int size) {
+    cout << "\n===== 👩‍💼 View Individual Expert Schedule =====\n";
+    cout << "Available Experts:\n";
+
+    for (int i = 0; i < size; i++) {
+        cout << i + 1 << ". " << experts[i].name << endl;
+    }
+
+    int choice;
+    cout << "Select an expert (1-" << size << "): ";
+    cin >> choice;
+
+    if (choice < 1 || choice > size) {
+        cout << "⚠️ Invalid choice!\n";
+        return;
+    }
+
+    int index = choice - 1;
+    cout << "\n📅 Schedule for " << experts[index].name << ":\n";
+    cout << "--------------------------------------------\n";
+    string days[7] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+    for (int i = 0; i < 7; i++) {
+        cout << days[i] << " : " << experts[index].schedule[i] << endl;
+    }
+    cout << "--------------------------------------------\n";
+}
+
 int main() {
     const string username = "beauty123";
     const string password = "admin";
-
-    string admin_username;
-    string admin_password;
-
+    string admin_username, admin_password;
     int choice;
 
-    cout << "===================================" << endl;
-    cout << "        🗝️  ADMIN LOGIN PAGE        " << endl;
-    cout << "===================================" << endl;
-    cout << "1. Forgot Password"<<"Testing123" << endl;
-    cout << "2. Login" << endl;
-    cout << "3. Exit" << endl;
-    cout << "-----------------------------------" << endl;
+    // Dummy expert data
+    Expert experts[3] = {
+        {"Aina Tan", {"10AM-6PM (3 sessions)", "12PM-8PM (4 sessions)", "10AM-6PM (3 sessions)",
+                      "10AM-6PM (3 sessions)", "1PM-9PM (4 sessions)", "9AM-3PM (2 sessions)", "OFF"}},
+        {"Bryan Lee", {"9AM-5PM (3 sessions)", "11AM-7PM (3 sessions)", "9AM-5PM (3 sessions)",
+                       "10AM-6PM (3 sessions)", "OFF", "10AM-4PM (2 sessions)", "OFF"}},
+        {"Chloe Wong", {"OFF", "12PM-8PM (3 sessions)", "10AM-6PM (4 sessions)",
+                        "10AM-6PM (4 sessions)", "12PM-8PM (3 sessions)", "9AM-1PM (1 session)", "OFF"}}
+    };
+
+    cout << "===================================\n";
+    cout << "        🗝️  ADMIN LOGIN PAGE        \n";
+    cout << "===================================\n";
+    cout << "1. Forgot Password\n";
+    cout << "2. Login\n";
+    cout << "3. Exit\n";
+    cout << "-----------------------------------\n";
     cout << "Please enter your choice (1-3): ";
     cin >> choice;
 
-    cout << endl;
+    if (choice == 1) {
+        cout << "\n🔑 Your USERNAME is: " << username << "\n";
+        cout << "🔑 Your PASSWORD is: " << password << "\n";
+        cout << "Redirecting you to login page...\n\n";
+        choice = 2; // Go to login
+    }
 
-    switch (choice) {
-    case 1:
-        cout << "============================" << endl;
-        cout << "      🔑 RECOVERY DETAILS     " << endl;
-        cout << "============================" << endl;
-        cout << "Your USERNAME is: " << username << endl;
-        cout << "Your password is: " << password << endl;
-        cout << "-----------------------------------" << endl;
-        cout << "Redirecting you to login page..." << endl << endl;
+    if (choice == 2) {
+        bool loggedIn = false;
 
-
-    case 2:
-        cout << "=========================" << endl;
-        cout << "         🔐 LOGIN         " << endl;
-        cout << "=========================" << endl;
-
-        while (true) {
-            cout << "Please enter username: ";
+        while (!loggedIn) {
+            cout << "\nUsername: ";
             cin >> admin_username;
-
-            cout << "Please enter password: ";
+            cout << "Password: ";
             cin >> admin_password;
 
             if (admin_username == username && admin_password == password) {
-                cout << endl;
-                cout << "✅ Login successful! Welcome, adminsssss." << endl;
-                break; // Exit loop 
+                cout << "\n✅ Login successful! Welcome, Admin.\n";
+
+                int adminChoice;
+                do {
+                    cout << "\n====== 📋 ADMIN MENU ======\n";
+                    cout << "1. View Individual Expert Schedule\n";
+                    cout << "2. Logout\n";
+                    cout << "Choose an option: ";
+                    cin >> adminChoice;
+
+                    if (adminChoice == 1) {
+                        viewExpertSchedule(experts, 3);
+                    }
+                    else if (adminChoice == 2) {
+                        cout << "\n👋 Logging out...\n";
+                    }
+                    else {
+                        cout << "⚠️ Invalid choice.\n";
+                    }
+                } while (adminChoice != 2);
+
+                loggedIn = true;
             }
             else {
-                cout << endl;
-                cout << "❌ Login unsuccessful. Wrong username or password." << endl;
-
-
-                char tryAgain;
-                cout << "Do you want to try again? (Y/N): ";
-                cin >> tryAgain;
-
-                if (tryAgain == 'N' || tryAgain == 'n') {
-                    cout << "Returning to main menu..." << endl;
-                    break;
-                }
+                cout << "❌ Wrong username or password. Try again.\n";
             }
         }
-        break;
-
-    case 3:
-        cout << "============================" << endl;
-        cout << "     👋 Exiting system...     " << endl;
-        cout << "============================" << endl;
-        break;
-
-    default:
-        cout << "⚠️ Invalid choice. Please select 1 to 3." << endl;
+    }
+    else if (choice == 3) {
+        cout << "\n👋 Exiting system...\n";
+    }
+    else {
+        cout << "⚠️ Invalid choice. Please select 1-3.\n";
     }
 
     return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
