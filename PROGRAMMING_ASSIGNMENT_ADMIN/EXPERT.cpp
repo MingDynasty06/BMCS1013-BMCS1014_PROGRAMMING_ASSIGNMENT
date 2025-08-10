@@ -1,9 +1,11 @@
-﻿// PROGRAMMING_ASSIGNMENT_ADMIN.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+﻿
 
 #include <iostream>
 #include <iomanip>
+#include <string>
+
 using namespace std;
+
 const int MAX_BOOKINGS = 500;
 
 struct Booking {
@@ -13,8 +15,11 @@ struct Booking {
     int day;                // 1–31
     string weekday;         // "Monday", etc.
     string timeSlot;        // "10:00–11:00"
-    int duration;           // in hours (1 for consultation, 3 for treatment)
+    int duration; // in hours (1 for consultation, 3 for treatment)
 };
+
+
+
 
 Booking bookings[MAX_BOOKINGS];
 int bookingCount = 0;
@@ -24,13 +29,16 @@ const int NUM_EXPERTS = 15;
 struct Expert {
     string name;
     string password;
+    int Treat_hours;
+    int Consult_hours;
+    int services_charges;
 };
 
 Expert experts[NUM_EXPERTS] = {
-    {"cham", "c555"},
-    {"tan", "t666"},
-    {"lim", "l222"},
-    {"ming", "m444"}
+    {"cham",{"c555"},{24},{6},{2100}},
+    {"tan", {"t666"},{25},{1} ,{2000}},
+    {"lim", {"l222"},{20},{2},{2500}},
+    {"ming",{"m444"},{24},{6},{2100}}
 };
 
 string toLower(string str) {
@@ -101,6 +109,8 @@ int loginExpert() {
 
 
 int main() {
+
+
     int expertIndex = loginExpert();
     int choice;
     do {
@@ -189,46 +199,32 @@ void viewAssignedCustomers(int expertIndex) {
 }
 
 void viewBonus(int expertIndex) {
-
-    double bonus_percentage, Treat_hours, Consult_hours, services_charges, bonus_earned, Hours_complete;
-
-
-    Hours_complete = 100;
-    Treat_hours = 24;
-    Consult_hours = 6;
-    Hours_complete = 26;
-    services_charges = 2100;
-
+    int choose,real_choose, Hours_complete, bonus_percentage, bonus_earned;
+    string resultBonusPercentage;
+	Hours_complete = experts[expertIndex].Treat_hours + experts[expertIndex].Consult_hours;
+    
 
     if (Hours_complete >= 30) {
         bonus_percentage = 50;
-        bonus_earned = services_charges * 0.5;
-        cout << setw(82) << "Expert Bonus Report  -  December" << endl;
-        cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << "TotaL Treatment Hours   Total Consultation Hours   Total Hours Completed   Total Service Charges   Bonus Percentage   Bonus Earned" << endl;
-        cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << setw(21) << Treat_hours << setw(27) << Consult_hours << setw(24) << Hours_complete << setw(24) << services_charges << setw(19) << bonus_percentage << setw(15) << bonus_earned << endl;
+		resultBonusPercentage = "50%";
+        bonus_earned = experts[expertIndex].services_charges * 0.5;
     }
     else if (Hours_complete >= 25 && Hours_complete < 30) {
         bonus_percentage = 25;
-        bonus_earned = services_charges * 0.25;
-        cout << setw(82) << "Expert Bonus Report  -  December" << endl;
-        cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << "TotaL Treatment Hours   Total Consultation Hours   Total Hours Completed   Total Service Charges   Bonus Percentage   Bonus Earned" << endl;
-        cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << setw(21) << Treat_hours << setw(27) << Consult_hours << setw(24) << Hours_complete << setw(24) << services_charges << setw(19) << bonus_percentage << setw(15) << bonus_earned << endl;
-
+		resultBonusPercentage = "25%";
+        bonus_earned = experts[expertIndex].services_charges * 0.25;
     }
     else if (Hours_complete < 25) {
         bonus_percentage = 0;
-        bonus_earned = services_charges * 0;
-        cout << setw(82) << "Expert Bonus Report  -  December" << endl;
-        cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << "TotaL Treatment Hours   Total Consultation Hours   Total Hours Completed   Total Service Charges   Bonus Percentage   Bonus Earned" << endl;
-        cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << setw(21) << Treat_hours << setw(27) << Consult_hours << setw(24) << Hours_complete << setw(24) << services_charges << setw(19) << bonus_percentage << setw(15) << bonus_earned << endl;
+		resultBonusPercentage = "0%";
+        bonus_earned = experts[expertIndex].services_charges * 0;
+        
     }
-    
+    cout << setw(82) << "Expert Bonus Report  -  December" << endl;
+    cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << "TotaL Treatment Hours   Total Consultation Hours   Total Hours Completed   Total Service Charges   Bonus Percentage   Bonus Earned" << endl;
+    cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << setw(21) << experts[expertIndex].Treat_hours << setw(27) << experts[expertIndex].Consult_hours << setw(24) << Hours_complete << setw(24) << experts[expertIndex].services_charges << setw(19) << resultBonusPercentage << setw(15) << bonus_earned << endl;
+
 
 }
-
