@@ -21,8 +21,11 @@ struct Booking {
 
 
 
-Booking bookings[MAX_BOOKINGS];
-int bookingCount = 0;
+Booking bookings[MAX_BOOKINGS] ={   
+    {"Alice", "Make Up", 1, 3, "Wednesday", "10:00-11:00", 1},
+    {"Bob", "Pre-Wedding", 1, 8, "Monday", "14:00-17:00", 3}
+};
+int bookingCount = 2;
 
 const int NUM_EXPERTS = 15;
 
@@ -188,14 +191,40 @@ void viewSchedule(int expertIndex) {
     }
 
     cout << "\nTotal Hours Worked: " << totalHours << " hrs" << endl;
-    cout << "Remaining Hours: " << (30 - totalHours) << " hrs (Limit: 30 hrs)" << endl;
+    cout << "Remaining Hours: " << (138 - totalHours) << " hrs (Limit: 23*6 hrs)" << endl;
 
 
 }
 
 void viewAssignedCustomers(int expertIndex) {
-    cout << "[Assigned Customers Feature - to be implemented]" << endl;
+    cout << "\n~~ Assigned Customers for " << experts[expertIndex].name << " ~~" << endl;
 
+    
+    cout << left << setw(15) << "Customer Name"
+        << setw(12) << "Day"
+        << setw(12) << "Weekday"
+        << setw(20) << "Time Slot"
+        << setw(20) << "Service"
+        << setw(10) << "Duration" << endl;
+    cout << string(90, '-') << endl;
+
+    bool found = false;
+
+    for (int i = 0; i < bookingCount; i++) {
+        if (bookings[i].expertIndex == expertIndex) { 
+            cout << left << setw(15) << bookings[i].customerName
+                << setw(12) << bookings[i].day
+                << setw(12) << bookings[i].weekday
+                << setw(20) << bookings[i].timeSlot
+                << setw(20) << bookings[i].serviceName
+                << bookings[i].duration << " hr(s)" << endl;
+            found = true;
+        }
+    }
+
+    if (found == false) {
+        cout << "No assigned customers yet." << endl;
+    }
 }
 
 void viewBonus(int expertIndex) {
@@ -228,3 +257,4 @@ void viewBonus(int expertIndex) {
 
 
 }
+    
