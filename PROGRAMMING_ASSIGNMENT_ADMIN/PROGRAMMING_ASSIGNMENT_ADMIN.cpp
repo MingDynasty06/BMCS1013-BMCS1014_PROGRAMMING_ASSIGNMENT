@@ -190,7 +190,7 @@ int main() {
                     cout << "2. View Overall Schedule\n";
                     cout << "3. View Customer List\n";
                     cout << "4. Generate Sales Reports\n";
-                    cout << "5. View Expert Bonus Entilements\n";
+                    cout << "5. View Expert Bonus Entitlements\n";
                     cout << "6. Logout\n";
                     cout << "Choose an option:\n";
                     cin >> adminChoice;
@@ -218,10 +218,41 @@ int main() {
                 loggedIn = true;
             }
             else {
-                cout << "❌ Wrong username or password. Try again.\n";
+                cout << "❌ Login failed.\n";
+
+                // Show the login menu again
+                cout << "\n===================================\n";
+                cout << "        🗝  ADMIN LOGIN PAGE        \n";
+                cout << "===================================\n";
+                cout << "1. Forgot Password\n";
+                cout << "2. Login\n";
+                cout << "3. Exit\n";
+                cout << "-----------------------------------\n";
+                cout << "Please enter your choice (1-3): ";
+                cin >> choice;
+
+                while (choice < 1 || choice > 3) {
+                    cout << "\n⚠ Invalid choice. Please select 1-3.\n";
+                    cout << "Please enter your choice (1-3): ";
+                    cin >> choice;
+                }
+
+                if (choice == 1) {
+                    cout << "\n🔑 Your USERNAME is: " << username << "\n";
+                    cout << "🔑 Your PASSWORD is: " << password << "\n";
+                    cout << "Redirecting you to login page...\n\n";
+                    choice = 2;
+                }
+                else if (choice == 3) {
+                    cout << "\n👋 Exiting system...\n";
+                    return 0;
+                }
+                // if choice == 2 → loop continues and asks username/password again
             }
         }
     }
+
+
     else if (choice == 3) {
         cout << "\n👋 Exiting system...\n";
     }
