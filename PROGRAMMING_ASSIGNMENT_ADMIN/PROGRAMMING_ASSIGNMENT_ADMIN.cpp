@@ -8,14 +8,20 @@ struct Expert {
     string schedule[7];// 7 days in a week
     string CustomerList[10]; // Placeholder for customer list, can be expanded
     int Bonus[3];//include treamentHours, consultationHours , serviceCharges ,bonusRate
+
 };
 struct Customer {
     string name;
-    string tel;
-    string paymentStatus;
+    string servicesType;   // service category: "Consultation", "Treatment", or "Package"
     string expertName;
-    string servicesType;
+    string date;           // format: YYYY-MM-DD
+    string time;
+    double paymentAmount;
+    string paymentStatus;  // e.g., "Paid" or "Pending"
+    string tel;            // customer phone number
 };
+
+
 
 // Function to display a selected expert's schedule
 void viewExpertSchedule(Expert experts[], int size) {
@@ -76,12 +82,78 @@ void viewCustomerList(Customer customer[], int range) {
 }
 
 
-void SalesReport(Expert experts[], int size) {
-    cout << "\n===== 📈 Sales Report =====\n";
-    cout << "Sales Report - December 2025\n\n";
-    for (int i = 0; i < size; i++) {
+void SalesReport(Customer customers[], int count) {
+    string startDate, endDate;
+    int filterChoice;
 
+    cout << "\n===== 📈 Sales Report =====\n";
+    cout << "1. View by Date Range\n";
+    cout << "2. View by Service Category\n";
+    cout << "3. View by Expert\n";
+    cout << "Choose option: ";
+    cin >> filterChoice;
+
+    double totalSales = 0.0;
+    int consultations = 0, treatments = 0, packages = 0;
+
+    if (filterChoice == 1) {
+        cout << "Enter start date (YYYY-MM-DD): ";
+        cin >> startDate;
+        cout << "Enter end date (YYYY-MM-DD): ";
+        cin >> endDate;
+
+        for (int i = 0; i < count; i++) {
+            if (customers[i].date >= startDate && customers[i].date <= endDate) {
+                totalSales += customers[i].paymentAmount;
+
+                if (customers[i].servicesType == "Consultation") consultations++;
+                else if (customers[i].servicesType == "Treatment") treatments++;
+                else if (customers[i].servicesType == "Package") packages++;
+            }
+        }
     }
+    else if (filterChoice == 2) {
+        string category;
+        cout << "Enter category (Consultation/Treatment/Package): ";
+        cin.ignore();
+        getline(cin, category);
+
+        for (int i = 0; i < count; i++) {
+            if (customers[i].servicesType == category) {
+                totalSales += customers[i].paymentAmount;
+            }
+        }
+    }
+    else if (filterChoice == 3) {
+        string expert;
+        cout << "Enter expert name: ";
+        cin.ignore();
+        getline(cin, expert);
+
+        for (int i = 0; i < count; i++) {
+            if (customers[i].expertName == expert) {
+                totalSales += customers[i].paymentAmount;
+
+                if (customers[i].servicesType == "Consultation") consultations++;
+                else if (customers[i].servicesType == "Treatment") treatments++;
+                else if (customers[i].servicesType == "Package") packages++;
+            }
+        }
+    }
+    else {
+        cout << "⚠ Invalid option!\n";
+        return;
+    }
+
+    cout << fixed << setprecision(2);
+    cout << "\n===== Sales Summary =====\n";
+    cout << "Total Sales: RM " << totalSales << "\n";
+    if (filterChoice == 1 || filterChoice == 3) {
+        cout << "Consultations: " << consultations << "\n";
+        cout << "Treatments: " << treatments << "\n";
+        cout << "Packages: " << packages << "\n";
+    }
+    cout << "=========================\n";
 }
 
 void viewExpertBonus(Expert experts[], int size) {
@@ -119,6 +191,8 @@ void viewExpertBonus(Expert experts[], int size) {
     }
 }
 
+
+
 int main() {
     const string username = "beauty123";
     const string password = "admin";
@@ -126,10 +200,14 @@ int main() {
     int choice;
 
     Customer customer[3] = {
-        {"Caden Lim",{"011-55006235"},{"Online Transfer"},{"Aina Tan"},{"Pre-wedding Services"}},
-        {"Jun hao",{"011-12279172"},{"Cash"},{"Bryan Lee"},{"Hair Styling Service"}},
-        {"Yi Ming",{"010-2011238"},{"Cash"},{"Chloe Wong"},{"Nail Care Service (Manicure & Pedicure)"}}
+     {"Caden Lim", "Pre-wedding Services", "Aina Tan", "2025-12-01", "10:00",
+      500.0, "Paid", "011-55006235"},
+     {"Jun Hao", "Hair Styling Service", "Bryan Lee", "2025-12-02", "14:00",
+      300.0, "Cash", "011-12279172"},
+     {"Yi Ming", "Nail Care Service (Manicure & Pedicure)", "Chloe Wong", "2025-12-03", "09:30",
+      250.0, "Cash", "010-2011238"}
     };
+
 
     // Dummy expert data
     Expert experts[3] = {
@@ -202,7 +280,7 @@ int main() {
                         viewCustomerList(customer, 3);
                     }
                     else if (adminChoice == 4) {
-                        SalesReport(experts, 3);
+                        SalesReport(customer, 3); // ✅ Correct type
                     }
                     else if (adminChoice == 5) {
                         viewExpertBonus(experts, 3);
@@ -259,3 +337,4 @@ int main() {
 
     return 0;
 }
+
