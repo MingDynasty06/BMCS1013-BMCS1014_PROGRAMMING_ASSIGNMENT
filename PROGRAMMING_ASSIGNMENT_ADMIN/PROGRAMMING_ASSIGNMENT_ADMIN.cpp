@@ -23,7 +23,8 @@ struct Customer {
 
 
 
-// Function to display a selected expert's schedule
+
+
 void viewExpertSchedule(Expert experts[], int size) {
     cout << "\n===== 👩‍💼 View Individual Expert Schedule =====\n";
     cout << "Available Experts:\n";
@@ -52,6 +53,32 @@ void viewExpertSchedule(Expert experts[], int size) {
     }
     cout << "--------------------------------------------\n";
 }
+
+void viewOverallSchedule(Expert experts[], int size) {
+    cout << "\n===== 📅 Overall Expert Schedule =====\n";
+
+    string days[7] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+    // Header row
+    cout << left << setw(12) << "Day";
+    for (int e = 0; e < size; e++) {
+        cout << left << setw(25) << experts[e].name;
+    }
+    cout << "\n" << string(12 + size * 25, '-') << "\n";
+
+    // Print each day with all experts' schedules
+    for (int d = 0; d < 7; d++) {
+        cout << left << setw(12) << days[d];
+        for (int e = 0; e < size; e++) {
+            cout << left << setw(25) << experts[e].schedule[d];
+        }
+        cout << "\n";
+    }
+
+    cout << string(12 + size * 25, '-') << "\n";
+}
+
+
 
 void viewCustomerList(Customer customer[], int range) {
     int selection, realrange;
@@ -211,8 +238,8 @@ int main() {
 
     // Dummy expert data
     Expert experts[3] = {
-        {"Aina Tan", {"10AM-6PM (3 sessions)", "12PM-8PM (4 sessions)", "10AM-6PM (3 sessions)",
-                      "10AM-6PM (3 sessions)", "1PM-9PM (4 sessions)", "9AM-3PM (2 sessions)", "OFF"},{}, { 24,6,2100 } },
+        {"Aina Tan", {"10AM-6PM (3 sessions)", "12PM-8PM (3 sessions)", "10AM-6PM (3 sessions)",
+                      "10AM-6PM (3 sessions)", "1PM-9PM (3 sessions)", "9AM-3PM (3 sessions)", "OFF"},{}, { 24,6,2100 } },
         {"Bryan Lee", {"9AM-5PM (3 sessions)", "11AM-7PM (3 sessions)", "9AM-5PM (3 sessions)",
                        "10AM-6PM (3 sessions)", "OFF", "10AM-4PM (2 sessions)", "OFF"}, {}, { 20,2,1100 }},
         {"Chloe Wong", {"OFF", "12PM-8PM (3 sessions)", "10AM-6PM (4 sessions)",
@@ -276,6 +303,11 @@ int main() {
                     if (adminChoice == 1) {
                         viewExpertSchedule(experts, 3);
                     }
+
+                    else if (adminChoice == 2) {
+                        viewOverallSchedule(experts, 3);
+                    }
+
                     else if (adminChoice == 3) {
                         viewCustomerList(customer, 3);
                     }
@@ -337,4 +369,3 @@ int main() {
 
     return 0;
 }
-
