@@ -35,7 +35,6 @@ struct Servicedetails { // container for expert
 };
 
 
-
 // array of 5 Service objects, name is services , [type][variablename][size]
 Servicedetails services[5] = { //services is an array with 5 different services ( diff element)
  {"Make Up Service", {
@@ -847,91 +846,91 @@ string mainmenu() {
     return mainmenuoption;
 }
 
-    int loginExpert();
-    int forgetpassword(int expertID);
-    void viewSchedule(int);
-    void viewAssignedCustomers(int);
-    void viewBonus(int);
+int loginExpert();
+int forgetpassword(int expertID);
+void viewSchedule(int);
+void viewAssignedCustomers(int);
+void viewBonus(int);
 
 
-    int forgetpassword(int expertID) {
-        string input;
-        int choice;
+int forgetpassword(int expertID) {
+    string input;
+    int choice;
 
-        while (true) {
-            cout << "\nSelect a number to continue." << endl;
-            cout << "1. Try Again" << endl;
-            cout << "2. Forgot Password" << endl;
-            cout << "Enter your choice: ";
-            cin >> input;
+    while (true) {
+        cout << "\nSelect a number to continue." << endl;
+        cout << "1. Try Again" << endl;
+        cout << "2. Forgot Password" << endl;
+        cout << "Enter your choice: ";
+        cin >> input;
 
-            bool isNumber = true;
-            for (char c : input) {
-                if (!isdigit(c)) {
-                    isNumber = false;
-                    break;
-                }
+        bool isNumber = true;
+        for (char c : input) {
+            if (!isdigit(c)) {
+                isNumber = false;
+                break;
             }
-            if (!isNumber) {
-                cout << "\nInvalid input! Please enter 1 or 2." << endl;
-                continue;
-            }
+        }
+        if (!isNumber) {
+            cout << "\nInvalid input! Please enter 1 or 2." << endl;
+            continue;
+        }
 
-            choice = stoi(input);
+        choice = stoi(input);
 
-            if (choice == 1) {
-                return loginExpert();
-            }
-            else if (choice == 2) {
-                // search all services to find matching expertID
-                for (int si = 0; si < 5; si++) {
-                    for (int ej = 0; ej < 3; ej++) {
-                        if (services[si].experts[ej].expertID == expertID) {
-                            cout << "\nYour password is: "
-                                << services[si].experts[ej].password << endl;
-                            return loginExpert();
-                        }
+        if (choice == 1) {
+            return loginExpert();
+        }
+        else if (choice == 2) {
+            // search all services to find matching expertID
+            for (int si = 0; si < 5; si++) {
+                for (int ej = 0; ej < 3; ej++) {
+                    if (services[si].experts[ej].expertID == expertID) {
+                        cout << "\nYour password is: "
+                            << services[si].experts[ej].password << endl;
+                        return loginExpert();
                     }
                 }
-                cout << "\nExpert not found." << endl;
-                return loginExpert();
             }
-            else {
-                cout << "\nThe number is not in range! Please enter 1 or 2." << endl;
+            cout << "\nExpert not found." << endl;
+            return loginExpert();
+        }
+        else {
+            cout << "\nThe number is not in range! Please enter 1 or 2." << endl;
+        }
+    }
+}
+
+int loginExpert() {
+    string inputName, inputPassword;
+    cout << "\n=== Expert Login ===\n";
+
+    cout << "Enter Expert Name: ";
+    getline(cin >> ws, inputName); // allows spaces
+
+    cout << "Enter Password: ";
+    cin >> inputPassword;
+
+    // loop through all services and all experts
+    for (int si = 0; si < 5; si++) {
+        for (int ej = 0; ej < 3; ej++) {
+            if (services[si].experts[ej].name == inputName &&
+                services[si].experts[ej].password == inputPassword) {
+                cout << "\nLogin successful. Welcome, "
+                    << services[si].experts[ej].name << "!" << endl;
+                return services[si].experts[ej].expertID; // return unique ID
+            }
+            else if (services[si].experts[ej].name == inputName &&
+                services[si].experts[ej].password != inputPassword) {
+                cout << "\nThe password is incorrect." << endl;
+                return forgetpassword(services[si].experts[ej].expertID);
             }
         }
     }
 
-    int loginExpert() {
-        string inputName, inputPassword;
-        cout << "\n=== Expert Login ===\n";
-
-        cout << "Enter Expert Name: ";
-        getline(cin >> ws, inputName); // allows spaces
-
-        cout << "Enter Password: ";
-        cin >> inputPassword;
-
-        // loop through all services and all experts
-        for (int si = 0; si < 5; si++) {
-            for (int ej = 0; ej < 3; ej++) {
-                if (services[si].experts[ej].name == inputName &&
-                    services[si].experts[ej].password == inputPassword) {
-                    cout << "\nLogin successful. Welcome, "
-                        << services[si].experts[ej].name << "!" << endl;
-                    return services[si].experts[ej].expertID; // return unique ID
-                }
-                else if (services[si].experts[ej].name == inputName &&
-                    services[si].experts[ej].password != inputPassword) {
-                    cout << "\nThe password is incorrect." << endl;
-                    return forgetpassword(services[si].experts[ej].expertID);
-                }
-            }
-        }
-
-        cout << "\nLogin failed. Invalid name and password." << endl;
-        return loginExpert(); // retry
-    }
+    cout << "\nLogin failed. Invalid name and password." << endl;
+    return loginExpert(); // retry
+}
 
 
 void viewSchedule(int expertIndex) {
@@ -1034,69 +1033,69 @@ void viewSchedule(int expertIndex) {
 
 int getTotalBookingsExpert(int expertIndex) {
     int count = 0;
-            for (int expert = 0; expert < TOTAL_EXPERTS; expert++) {
-                for (int day = 1; day <= TOTAL_DAYS; day++) {
-                    for (int slot = 1; slot <= SLOTS_PER_DAY; slot++) {
-                           if (bookingDetails[expert][day][slot].isBooked && bookingDetails[expert][day][slot].expertID == expertIndex) {
-                                count++;
-                           }
-                    }
+    for (int expert = 0; expert < TOTAL_EXPERTS; expert++) {
+        for (int day = 1; day <= TOTAL_DAYS; day++) {
+            for (int slot = 1; slot <= SLOTS_PER_DAY; slot++) {
+                if (bookingDetails[expert][day][slot].isBooked && bookingDetails[expert][day][slot].expertID == expertIndex) {
+                    count++;
                 }
-
             }
-       
-   
+        }
+
+    }
+
+
 
     return count;
 }
 
 void viewAssignedCustomers(int expertIndex) {
-   
 
-        int list = 1;
-        bool found = false;
 
-        // 表头只打印一次
-        for (int e = 0; e < TOTAL_EXPERTS; e++) {
-            for (int d = 1; d <= TOTAL_DAYS; d++) {
-                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
-                    if (bookingDetails[e][d][s].isBooked &&
-                        bookingDetails[e][d][s].expertID == expertIndex) {
+    int list = 1;
+    bool found = false;
 
-                        if (!found) { // 第一次找到才打印表头
-                            cout << "\n~~ Assigned Customers for "
-                                << bookingDetails[e][d][s].expertName << " ~~" << endl << endl;
-                            cout << left << setw(6) << "No."
-                                << setw(15) << "Customer Name"
-                                << setw(20) << "Service" << endl;
-                            cout << string(35, '-') << endl;
-                            found = true;
-                        }
+    // 表头只打印一次
+    for (int e = 0; e < TOTAL_EXPERTS; e++) {
+        for (int d = 1; d <= TOTAL_DAYS; d++) {
+            for (int s = 1; s <= SLOTS_PER_DAY; s++) {
+                if (bookingDetails[e][d][s].isBooked &&
+                    bookingDetails[e][d][s].expertID == expertIndex) {
 
-                        string list_no = to_string(list) + ".";
-                        cout << left << setw(6) << list_no
-                            << setw(15) << bookingDetails[e][d][s].username
-                            << setw(20) << bookingDetails[e][d][s].serviceName << endl;
-
-                        list++;
+                    if (!found) { // 第一次找到才打印表头
+                        cout << "\n~~ Assigned Customers for "
+                            << bookingDetails[e][d][s].expertName << " ~~" << endl << endl;
+                        cout << left << setw(6) << "No."
+                            << setw(15) << "Customer Name"
+                            << setw(20) << "Service" << endl;
+                        cout << string(35, '-') << endl;
+                        found = true;
                     }
+
+                    string list_no = to_string(list) + ".";
+                    cout << left << setw(6) << list_no
+                        << setw(15) << bookingDetails[e][d][s].username
+                        << setw(20) << bookingDetails[e][d][s].serviceName << endl;
+
+                    list++;
                 }
             }
         }
+    }
 
-        if (!found) {
-            cout << "No assigned customers yet." << endl;
-        }
+    if (!found) {
+        cout << "No assigned customers yet." << endl;
+    }
 
-        cout << "\nNumber of Customers : " << list - 1 << endl;
-   
+    cout << "\nNumber of Customers : " << list - 1 << endl;
 
-   
+
+
 }
 void viewBonus(int expertIndex) {
     int choose, real_choose, bonus_percentage;
     string resultBonusPercentage;
-   
+
     double bonus_earned = 0, services_charges = 0, Hours_complete = 0;
 
     for (int e = 0; e < TOTAL_EXPERTS; e++) {
@@ -1134,154 +1133,17 @@ void viewBonus(int expertIndex) {
     cout << "-------------------------------------------------------------------------------------" << endl;
     cout << "   Total Hours Completed   Total Service Charges   Bonus Percentage   Bonus Earned" << endl;
     cout << "-------------------------------------------------------------------------------------" << endl;
-    cout <<  setw(24) << Hours_complete << setw(24) << services_charges << setw(19) << resultBonusPercentage << setw(15) << bonus_earned << endl;
+    cout << setw(24) << Hours_complete << setw(24) << services_charges << setw(19) << resultBonusPercentage << setw(15) << bonus_earned << endl;
 
 
 }
 
-/*这里开始admin的 generate sales report */
-void generateSalesReport() {
-    int filterChoice;
-
-    cout << "\n===== Generate Sales Report =====\n";
-    cout << "1. View by Date Range (Day 1-31)\n";
-    cout << "2. View by Service Category\n";
-    cout << "3. View by Expert\n";
-    cout << "4. View All Data\n";
-    cout << "Choose option: ";
-    cin >> filterChoice;
-
-    double totalSales = 0.0;
-    int makeupServices = 0, preweddingServices = 0, hairstylingServices = 0,
-        bridesmaidServices = 0, nailcareServices = 0;
-
-    if (filterChoice == 1) {
-        int startDay, endDay;
-        cout << "Enter start day (1-31): ";
-        cin >> startDay;
-        cout << "Enter end day (1-31): ";
-        cin >> endDay;
-
-        if (startDay < 1 || startDay > 31 || endDay < 1 || endDay > 31 || startDay > endDay) {
-            cout << "Invalid date range!\n";
-            return;
-        }
-
-        // Loop through actual booking data , 循环真的data
-        for (int e = 0; e < TOTAL_EXPERTS; e++) {
-            for (int d = startDay; d <= endDay; d++) {
-                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
-                    if (bookingDetails[e][d][s].isBooked) {
-                        totalSales += bookingDetails[e][d][s].totalAmount;
-
-                        // Count service types
-                        if (bookingDetails[e][d][s].serviceName == "Make Up Service") makeupServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Pre-wedding service") preweddingServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Hair Styling service") hairstylingServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Bridesmaid & family makeup service") bridesmaidServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Nail care service (manicure & pedicure)") nailcareServices++;
-                    }
-                }
-            }
-        }
-        cout << "\n=== Sales Report for Days " << startDay << " to " << endDay << " ===\n";
-    }
-    else if (filterChoice == 2) {
-        string category;
-        cout << "\nAvailable Service Categories:\n";
-        cout << "1. Make Up Service\n";
-        cout << "2. Pre-wedding service\n";
-        cout << "3. Hair Styling service\n";
-        cout << "4. Bridesmaid & family makeup service\n";
-        cout << "5. Nail care service (manicure & pedicure)\n";
-        cout << "Enter service name: ";
-        cin.ignore();
-        getline(cin, category);
-
-        for (int e = 0; e < TOTAL_EXPERTS; e++) {
-            for (int d = 1; d <= TOTAL_DAYS; d++) {
-                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
-                    if (bookingDetails[e][d][s].isBooked &&
-                        bookingDetails[e][d][s].serviceName == category) {
-                        totalSales += bookingDetails[e][d][s].totalAmount;
-                    }
-                }
-            }
-        }
-        cout << "\n=== Sales Report for " << category << " ===\n";
-    }
-    else if (filterChoice == 3) {
-        string expert;
-        cout << "\nAvailable Experts:\n";
-        cout << "1. Allice Tan (Senior)\n";
-        cout << "2. Bella Lim (Junior)\n";
-        cout << "3. Chloe Ong (Bridal Specialist)\n";
-        cout << "Enter expert name: ";
-        cin.ignore();
-        getline(cin, expert);
-
-        for (int e = 0; e < TOTAL_EXPERTS; e++) {
-            for (int d = 1; d <= TOTAL_DAYS; d++) {
-                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
-                    if (bookingDetails[e][d][s].isBooked &&
-                        bookingDetails[e][d][s].expertName == expert) {
-                        totalSales += bookingDetails[e][d][s].totalAmount;
-
-                        // Count service types for this expert
-                        if (bookingDetails[e][d][s].serviceName == "Make Up Service") makeupServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Pre-wedding service") preweddingServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Hair Styling service") hairstylingServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Bridesmaid & family makeup service") bridesmaidServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Nail care service (manicure & pedicure)") nailcareServices++;
-                    }
-                }
-            }
-        }
-        cout << "\n=== Sales Report for " << expert << " ===\n";
-    }
-    else if (filterChoice == 4) {
-        // Show all data (Days 1-31)
-        for (int e = 0; e < TOTAL_EXPERTS; e++) {
-            for (int d = 1; d <= TOTAL_DAYS; d++) {
-                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
-                    if (bookingDetails[e][d][s].isBooked) {
-                        totalSales += bookingDetails[e][d][s].totalAmount;
-
-                        if (bookingDetails[e][d][s].serviceName == "Make Up Service") makeupServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Pre-wedding service") preweddingServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Hair Styling service") hairstylingServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Bridesmaid & family makeup service") bridesmaidServices++;
-                        else if (bookingDetails[e][d][s].serviceName == "Nail care service (manicure & pedicure)") nailcareServices++;
-                    }
-                }
-            }
-        }
-        cout << "\n=== Complete Sales Report (All Bookings) ===\n";
-    }
-    else {
-        cout << "⚠ Invalid option!\n";
-        return;
-    }
-
-    cout << fixed << setprecision(2);
-    cout << "Total Sales: RM " << totalSales << "\n";
-    if (filterChoice == 1 || filterChoice == 3 || filterChoice == 4) {
-        cout << "\n=== Service Breakdown ===\n";
-        cout << "Make Up Services: " << makeupServices << "\n";
-        cout << "Pre-wedding Services: " << preweddingServices << "\n";
-        cout << "Hair Styling Services: " << hairstylingServices << "\n";
-        cout << "Bridesmaid Services: " << bridesmaidServices << "\n";
-        cout << "Nail Care Services: " << nailcareServices << "\n";
-    }
-    cout << "=========================\n";
-
-    string confirm;
-    cout << "\nPress any letter to return to admin menu: ";
-    cin >> confirm;
-}
 
 
-/*这里是view individual expert shcedule的function*/
+
+/*这里开始我们的admin page functions*/
+/*这个是viewIndividualExpertSchedule*/
+
 void viewIndividualExpertSchedule() {
     cout << "\n=====  View Individual Expert Schedule =====\n";
     cout << "Available Experts:\n";
@@ -1358,8 +1220,7 @@ void viewIndividualExpertSchedule() {
 }
 
 
-
-/*这里是view overall schedule 的 function*/
+/*这个是view overall schedule*/
 void viewOverallSchedule() {
     cout << "\n=====  Overall Expert Schedule =====\n";
     cout << "Combined schedule of all experts for December 2025\n";
@@ -1410,6 +1271,330 @@ void viewOverallSchedule() {
     }
     cout << "===================================================================================\n";
 }
+
+
+/*这个是view customer list*/
+void viewCustomerList() {
+    bool hasRecord = false;
+    int selection, realrange;
+    string targetUser, servicesname, expertname, customername;
+    char searchYN, lowersearchYN;
+    cout << "\nAll Registered Customers : " << endl;
+    cout << "---------------------------------------------------------------------------" << endl;
+    cout << left << setw(20) << "Name" << " | " << left << setw(20) << "Service Booked" << " | " << left << setw(20) << "Assigned Expert" << endl;
+    cout << "---------------------------------------------------------------------------" << endl;
+
+
+
+    for (int i = 0; i < MAX_CUSTOMERS; i++) {
+
+        targetUser = customers[i].username;
+        for (int e = 0; e < TOTAL_EXPERTS; e++) {
+            for (int d = 0; d < TOTAL_DAYS; d++) {
+                for (int s = 0; s < SLOTS_PER_DAY; s++) {
+                    servicesname = bookingDetails[e][d][s].serviceName;
+                    expertname = bookingDetails[e][d][s].expertName;
+                    if (bookingDetails[e][d][s].isBooked && bookingDetails[e][d][s].username == targetUser) {
+                        cout << left << setw(20) << bookingDetails[e][d][s].username
+                            << " | " << left << setw(20) << servicesname
+                            << " | " << left << setw(20) << expertname << endl;
+
+                        hasRecord = true;
+                    }
+                }
+            }
+        }
+    }
+    if (!hasRecord) {
+        cout << "No customer records found." << endl;
+    }
+}
+
+
+/*这个是view generate sales report*/
+void generateSalesReport() {
+    int filterChoice;
+
+    cout << "\n===== 📈 Generate Sales Report =====\n";
+    cout << "1. View by Date Range (Day 1-31)\n";
+    cout << "2. View by Service Category\n";
+    cout << "3. View by Expert\n";
+    cout << "4. View All Data\n";
+    cout << "Choose option: ";
+    cin >> filterChoice;
+
+    double totalSales = 0.0;
+    int makeupServices = 0, preweddingServices = 0, hairstylingServices = 0,
+        bridesmaidServices = 0, nailcareServices = 0;
+
+    // Add individual sales tracking
+    double makeupSales = 0, preweddingSales = 0, hairstylingSales = 0,
+        bridesmaidSales = 0, nailcareSales = 0;
+
+    if (filterChoice == 1) {
+        int startDay, endDay;
+        cout << "Enter start day (1-31): ";
+        cin >> startDay;
+        cout << "Enter end day (1-31): ";
+        cin >> endDay;
+
+        if (startDay < 1 || startDay > 31 || endDay < 1 || endDay > 31 || startDay > endDay) {
+            cout << "Invalid date range!\n";
+            return;
+        }
+
+        // Loop through actual booking data
+        for (int e = 0; e < TOTAL_EXPERTS; e++) {
+            for (int d = startDay; d <= endDay; d++) {
+                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
+                    if (bookingDetails[e][d][s].isBooked) {
+                        totalSales += bookingDetails[e][d][s].totalAmount;
+
+                        // Count service types AND track individual sales
+                        if (bookingDetails[e][d][s].serviceName == "Make Up Service") {
+                            makeupServices++;
+                            makeupSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Pre-wedding service") {
+                            preweddingServices++;
+                            preweddingSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Hair Styling service") {
+                            hairstylingServices++;
+                            hairstylingSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Bridesmaid & family makeup service") {
+                            bridesmaidServices++;
+                            bridesmaidSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Nail care service (manicure & pedicure)") {
+                            nailcareServices++;
+                            nailcareSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (filterChoice == 2) {
+        string category;
+        cout << "\nAvailable Service Categories:\n";
+        cout << "1. Make Up Service\n";
+        cout << "2. Pre-wedding service\n";
+        cout << "3. Hair Styling service\n";
+        cout << "4. Bridesmaid & family makeup service\n";
+        cout << "5. Nail care service (manicure & pedicure)\n";
+        cout << "Enter service name: ";
+        cin.ignore();
+        getline(cin, category);
+
+        for (int e = 0; e < TOTAL_EXPERTS; e++) {
+            for (int d = 1; d <= TOTAL_DAYS; d++) {
+                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
+                    if (bookingDetails[e][d][s].isBooked &&
+                        bookingDetails[e][d][s].serviceName == category) {
+                        totalSales += bookingDetails[e][d][s].totalAmount;
+
+                        // Count the specific category AND track sales
+                        if (category == "Make Up Service") {
+                            makeupServices++;
+                            makeupSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (category == "Pre-wedding service") {
+                            preweddingServices++;
+                            preweddingSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (category == "Hair Styling service") {
+                            hairstylingServices++;
+                            hairstylingSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (category == "Bridesmaid & family makeup service") {
+                            bridesmaidServices++;
+                            bridesmaidSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (category == "Nail care service (manicure & pedicure)") {
+                            nailcareServices++;
+                            nailcareSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (filterChoice == 3) {
+        string expert;
+        cout << "\nAvailable Experts:\n";
+        cout << "1. Allice Tan (Senior)\n";
+        cout << "2. Bella Lim (Junior)\n";
+        cout << "3. Chloe Ong (Bridal Specialist)\n";
+        cout << "Enter expert name: ";
+        cin.ignore();
+        getline(cin, expert);
+
+        for (int e = 0; e < TOTAL_EXPERTS; e++) {
+            for (int d = 1; d <= TOTAL_DAYS; d++) {
+                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
+                    if (bookingDetails[e][d][s].isBooked &&
+                        bookingDetails[e][d][s].expertName == expert) {
+                        totalSales += bookingDetails[e][d][s].totalAmount;
+
+                        // Count service types for this expert AND track sales
+                        if (bookingDetails[e][d][s].serviceName == "Make Up Service") {
+                            makeupServices++;
+                            makeupSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Pre-wedding service") {
+                            preweddingServices++;
+                            preweddingSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Hair Styling service") {
+                            hairstylingServices++;
+                            hairstylingSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Bridesmaid & family makeup service") {
+                            bridesmaidServices++;
+                            bridesmaidSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Nail care service (manicure & pedicure)") {
+                            nailcareServices++;
+                            nailcareSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (filterChoice == 4) {
+        // Show all data (Days 1-31)
+        for (int e = 0; e < TOTAL_EXPERTS; e++) {
+            for (int d = 1; d <= TOTAL_DAYS; d++) {
+                for (int s = 1; s <= SLOTS_PER_DAY; s++) {
+                    if (bookingDetails[e][d][s].isBooked) {
+                        totalSales += bookingDetails[e][d][s].totalAmount;
+
+                        if (bookingDetails[e][d][s].serviceName == "Make Up Service") {
+                            makeupServices++;
+                            makeupSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Pre-wedding service") {
+                            preweddingServices++;
+                            preweddingSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Hair Styling service") {
+                            hairstylingServices++;
+                            hairstylingSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Bridesmaid & family makeup service") {
+                            bridesmaidServices++;
+                            bridesmaidSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                        else if (bookingDetails[e][d][s].serviceName == "Nail care service (manicure & pedicure)") {
+                            nailcareServices++;
+                            nailcareSales += bookingDetails[e][d][s].totalAmount;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else {
+        cout << "⚠ Invalid option!\n";
+        return;
+    }
+
+    // Professional Sales Report - Matching your example format
+    cout << "\nSales Report - December 2025\n\n";
+    cout << left << setw(25) << "Service Type"
+        << setw(20) << "Total Bookings"
+        << setw(20) << "Total Sales (RM)" << endl;
+    cout << string(65, '-') << "\n";
+
+    // Display data with proper formatting
+    cout << fixed << setprecision(0); // No decimal places for whole numbers
+
+    if (makeupServices > 0) {
+        cout << left << setw(25) << "Make Up Service"
+            << setw(20) << makeupServices
+            << "RM" << (int)makeupSales << endl;
+    }
+    if (preweddingServices > 0) {
+        cout << left << setw(25) << "Pre-wedding Service"
+            << setw(20) << preweddingServices
+            << "RM" << (int)preweddingSales << endl;
+    }
+    if (hairstylingServices > 0) {
+        cout << left << setw(25) << "Hair Styling Service"
+            << setw(20) << hairstylingServices
+            << "RM" << (int)hairstylingSales << endl;
+    }
+    if (bridesmaidServices > 0) {
+        cout << left << setw(25) << "Bridesmaid Service"
+            << setw(20) << bridesmaidServices
+            << "RM" << (int)bridesmaidSales << endl;
+    }
+    if (nailcareServices > 0) {
+        cout << left << setw(25) << "Nail Care Service"
+            << setw(20) << nailcareServices
+            << "RM" << (int)nailcareSales << endl;
+    }
+
+    cout << "\nTotal Revenue: RM" << (int)totalSales << endl;
+
+    return;
+}
+
+
+
+
+/*这个是view expert bonus*/
+// Replace the declaration and initialization of expertamount, expertslot, bonus_earned, etc. at the top of viewExpertBonus() with the following:
+void viewExpertBonus() {
+    bool found = false;
+    cout << setw(34) << "Expert Bonus Report  -  December" << endl;
+    cout << "--------------------------------------------------------------------------------------------------------------" << endl;
+    cout << setw(24) << "Expert Name" << "|" << setw(24) << "Total Hours Completed" << "|" << setw(24) << "Total Service Charges" << "|" << setw(24) << "Bonus Percentage" << "|" << setw(24) << "Bonus Earned" << endl;
+    cout << "--------------------------------------------------------------------------------------------------------------" << endl;
+
+    for (int e = 0; e <= TOTAL_EXPERTS; e++) {
+        string expertname = "";
+        double expertamount = 0.0;
+        string resultBonusPercentage = "0%";
+        double bonus_earned = 0.0;
+        int expertslot = 0;
+        for (int d = 0; d <= TOTAL_DAYS; d++) {
+            for (int s = 0; s <= SLOTS_PER_DAY; s++) {
+                if (bookingDetails[e][d][s].isBooked) {
+                    expertname = bookingDetails[e][d][s].expertName;
+                    expertslot += 2;
+                    expertamount += bookingDetails[e][d][s].totalAmount;
+                    found = true; // Found at least one booking for this expert    
+                }
+            }
+        }
+        if (expertslot == 0 && expertamount == 0)continue;//expert no information will direct past  
+        if (expertslot >= 30) {
+            resultBonusPercentage = "50%";
+            bonus_earned = expertamount * 0.5;
+        }
+        else if (expertslot >= 25) {
+            resultBonusPercentage = "25%";
+            bonus_earned = expertamount * 0.25;
+        }
+        else {
+            resultBonusPercentage = "0%";
+            bonus_earned = 0;
+        }
+        cout << setw(24) << expertname << "|" << setw(24) << expertslot << "|" << setw(24) << expertamount << "|" << setw(24) << resultBonusPercentage << "|" << setw(24) << bonus_earned << endl;
+
+
+    }
+    if (!found) {
+        cout << "No expert bonus records found." << endl;
+    }
+}
+
+
+
 
 
 
@@ -1522,63 +1707,138 @@ int main() {
                 default:
                     cout << "Invalid choice. Try again." << endl;
                 }
-                   } while (choice != 4);
+            } while (choice != 4);
 
-                   system("pause");
+            system("pause");
         }
 
 
-        //我这边加了menu options for admin page的
+        /*这是我们的admin的options page和login page*/
         else if (mainmenuoption == "3") {
-            int adminChoice;
-            do {
-                cout << "\n=====  ADMIN DASHBOARD =====\n";
-                cout << "Welcome to Admin Panel!\n";
-                cout << "=========================================\n";
-                cout << "1. View Individual Expert Schedule\n";
-                cout << "2. View Overall Schedule\n";
-                cout << "3. View Customer List\n";
-                cout << "4. Generate Sales Reports\n";
-                cout << "5. View Expert Bonus Entitlements\n";
-                cout << "6. Logout\n";
-                cout << "=========================================\n";
-                cout << "Choose an option: ";
-                cin >> adminChoice;
+            const string username = "beauty123";
+            const string password = "admin";
+            string admin_username, admin_password;
+            int choice;
 
-                switch (adminChoice) {
-                case 1:
-                    viewIndividualExpertSchedule();
-                    break;
-                case 2:
-                    viewOverallSchedule();
-                    break;
-                case 3:
-                    cout << "\n[Customer List - Coming Soon!]\n";
-                    cout << "This feature will show detailed customer information.\n";
-                    break;
-                case 4:
-                    generateSalesReport();
-                    break;
-                case 5:
-                    cout << "\n[Expert Bonus Entitlements - Coming Soon!]\n";
-                    cout << "This feature will show bonus calculations for all experts.\n";
-                    break;
-                case 6:
-                    cout << "\n Logging out from Admin Panel...\n";
-                    break;
-                default:
-                    cout << " Invalid choice. Please select 1-6.\n";
-                }
+            cout << "===================================\n";
+            cout << "          ADMIN LOGIN PAGE        \n";
+            cout << "===================================\n";
+            cout << "1. Forgot Password\n";
+            cout << "2. Login\n";
+            cout << "3. Exit\n";
+            cout << "-----------------------------------\n";
+            cout << "Please enter your choice (1-3): ";
+            cin >> choice;
 
-                if (adminChoice != 6 && adminChoice >= 1 && adminChoice <= 5) {
-                    string confirm;
-                    cout << "\nPress any letter to return to admin menu: ";
-                    cin >> confirm;
-                }
-
-            } while (adminChoice != 6);
+            while (choice < 1 || choice > 3) {
+                cout << "\n Invalid choice. Please select 1-3.\n";
+                cout << "\n===================================\n";
+                cout << "          ADMIN LOGIN PAGE        \n";
+                cout << "===================================\n";
+                cout << "1. Forgot Password\n";
+                cout << "2. Login\n";
+                cout << "3. Exit\n";
+                cout << "-----------------------------------\n";
+                cout << "Please enter your choice (1-3): ";
+                cin >> choice;
             }
 
+            if (choice == 1) {
+                cout << "\n Your USERNAME is: " << username << "\n";
+                cout << " Your PASSWORD is: " << password << "\n";
+                cout << "Redirecting you to login page...\n\n";
+                choice = 2; // Go to login
+            }
+
+            if (choice == 2) {
+                bool loggedIn = false;
+
+                // LOGIN VERIFICATION LOOP - This was missing!
+                while (!loggedIn) {
+                    cout << "\n===== ADMIN LOGIN =====\n";
+                    cout << "Username: ";
+                    cin >> admin_username;
+                    cout << "Password: ";
+                    cin >> admin_password;
+
+                    if (admin_username == username && admin_password == password) {
+                        cout << "\n Login successful! Welcome, Admin.\n";
+                        loggedIn = true; // Exit login loop and proceed to admin dashboard
+                    }
+                    else {
+                        cout << " Login failed. Incorrect username or password.\n";
+                        cout << "1. Try Again\n";
+                        cout << "2. Back to Main Menu\n";
+                        cout << "Choose option: ";
+                        int retry;
+                        cin >> retry;
+
+                        if (retry == 2) {
+                            cout << "Returning to main menu...\n";
+                            return main(); // Go back to main menu
+                        }
+                        // If retry == 1 or any other input, loop continues (try again)
+                    }
+                }
+
+                // ADMIN DASHBOARD - login过后才能看见
+                int adminChoice;
+                do {
+                    cout << "\n=====  ADMIN DASHBOARD =====\n";
+                    cout << "Welcome to Admin Panel!\n";
+                    cout << "=========================================\n";
+                    cout << "1. View Individual Expert Schedule\n";
+                    cout << "2. View Overall Schedule\n";
+                    cout << "3. View Customer List\n";
+                    cout << "4. Generate Sales Reports\n";
+                    cout << "5. View Expert Bonus Entitlements\n";
+                    cout << "6. Logout\n";
+                    cout << "=========================================\n";
+                    cout << "Choose an option: ";
+                    cin >> adminChoice;
+
+                    switch (adminChoice) {
+                    case 1:
+                        viewIndividualExpertSchedule();
+                        break;
+                    case 2:
+                        viewOverallSchedule();
+                        break;
+                    case 3:
+                        viewCustomerList();
+                        break;
+                    case 4:
+                        generateSalesReport();
+                        break;
+                    case 5:
+                        viewExpertBonus();
+                        break;
+                    case 6:
+                        cout << "\n Logging out from Admin Panel...\n";
+                        break;
+                    default:
+                        cout << " Invalid choice. Please select 1-6.\n";
+                    }
+
+                    if (adminChoice != 6 && adminChoice >= 1 && adminChoice <= 5) {
+                        string confirm;
+                        cout << "\nPress any letter to return to admin menu: ";
+                        cin >> confirm;
+                    }
+                } while (adminChoice != 6);
+            }
+
+            else if (choice == 3) {
+                cout << "\n Exiting admin system...\n";
+            }
+
+
+
+
+            else if (choice == 3) {
+                cout << "\n Exiting system...\n";
+            }
+        }
 
 
 
@@ -1589,5 +1849,5 @@ int main() {
 
     } while (mainmenuoption != "4");
 
-    return 0;   
+    return 0;
 }
